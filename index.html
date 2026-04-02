@@ -1699,7 +1699,10 @@
     const svcs = (d.servicios && d.servicios.length) ? d.servicios : DEFAULTS.servicios;
     document.getElementById('services-grid').innerHTML = svcs.map(s => `
       <div class="service-card reveal">
-        <div class="service-icon">${s.icon}</div>
+        ${s.imgUrl
+          ? `<img src="${s.imgUrl}" alt="${s.nombre}" style="width:100%;height:180px;object-fit:cover;border-radius:10px;margin-bottom:20px;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="service-icon" style="display:none">${s.icon||'🌐'}</div>`
+          : `<div class="service-icon">${s.icon||'🌐'}</div>`
+        }
         <h3 class="service-name">${s.nombre}</h3>
         <p class="service-desc">${s.desc}</p>
         <ul class="service-features">
@@ -1742,7 +1745,10 @@
     const items = (d.portfolio && d.portfolio.length) ? d.portfolio : DEFAULTS.portfolio;
     document.getElementById('portfolio-grid').innerHTML = items.map(p => `
       <div class="portfolio-card reveal">
-        <div class="portfolio-img-placeholder">${p.emoji || '🌐'}</div>
+        ${p.imgUrl
+          ? `<img src="${p.imgUrl}" alt="${p.nombre}" class="portfolio-img" onerror="this.outerHTML='<div class=\\'portfolio-img-placeholder\\'>${p.emoji||'🌐'}</div>'" />`
+          : `<div class="portfolio-img-placeholder">${p.emoji||'🌐'}</div>`
+        }
         <div class="portfolio-info">
           <p class="portfolio-tag">${p.tag}</p>
           <h3 class="portfolio-name">${p.nombre}</h3>
@@ -1759,7 +1765,10 @@
         <div class="test-quote">"</div>
         <p class="test-text">${t.texto}</p>
         <div class="test-author">
-          <div class="test-avatar">${t.initials}</div>
+          ${t.imgUrl
+            ? `<img src="${t.imgUrl}" alt="${t.nombre}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;" onerror="this.outerHTML='<div class=\\'test-avatar\\'>${t.initials||'?'}</div>'" />`
+            : `<div class="test-avatar">${t.initials||'?'}</div>`
+          }
           <div>
             <div class="test-stars">${'<span class="star">★</span>'.repeat(5)}</div>
             <div class="test-name">${t.nombre}</div>
