@@ -263,6 +263,45 @@
     .detail-field-label { font-size: 10px; font-weight: 600; color: var(--dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
     .detail-field-val { font-size: 13px; color: var(--text); line-height: 1.5; }
     .detail-field-val.highlight { color: var(--cyan); font-weight: 700; }
+
+    /* ── RESPONSIVE ADMIN ── */
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-240px); transition: transform 0.3s; }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .topbar { padding: 0 16px; }
+      .content { padding: 20px 16px; }
+      .dash-grid { grid-template-columns: 1fr 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .cotz-detail-body { grid-template-columns: 1fr !important; }
+
+      /* Hamburger admin */
+      .admin-menu-btn {
+        display: flex !important;
+        align-items: center; justify-content: center;
+        width: 36px; height: 36px;
+        background: var(--dark3); border: 1px solid var(--border);
+        border-radius: 8px; cursor: pointer; font-size: 18px;
+        color: var(--text); flex-shrink: 0;
+      }
+      .sidebar-overlay {
+        display: none;
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,0.6);
+        z-index: 99;
+      }
+      .sidebar-overlay.open { display: block; }
+    }
+
+    @media (max-width: 600px) {
+      .dash-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .dash-val { font-size: 22px; }
+      .topbar-title { font-size: 13px; }
+      .save-btn { padding: 8px 14px; font-size: 12px; }
+      .preview-btn { display: none; }
+      .leads-table { font-size: 12px; }
+      .leads-table th, .leads-table td { padding: 8px 10px; }
+    }
   </style>
 </head>
 <body>
@@ -295,12 +334,16 @@
 <!-- Main -->
 <div class="main">
   <div class="topbar">
-    <span class="topbar-title" id="topbar-title">Dashboard</span>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="admin-menu-btn" id="admin-menu-btn" style="display:none;" onclick="toggleAdminMenu()">☰</button>
+      <span class="topbar-title" id="topbar-title">Dashboard</span>
+    </div>
     <div class="topbar-right">
       <a href="index.html" target="_blank" class="preview-btn">👁 Vista previa</a>
       <button class="save-btn" id="save-btn" onclick="saveAll()">💾 Guardar cambios</button>
     </div>
   </div>
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleAdminMenu()"></div>
 
   <div class="content">
 
@@ -975,8 +1018,28 @@
       item.classList.add('active');
       document.getElementById('panel-' + item.dataset.panel).classList.add('active');
       document.getElementById('topbar-title').textContent = item.textContent.trim();
+      // Cierra menú en mobile al seleccionar
+      if (window.innerWidth <= 900) toggleAdminMenu(false);
     });
   });
+
+  // Admin responsive menu
+  function toggleAdminMenu(force) {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const isOpen = sidebar.classList.contains('open');
+    const open = force !== undefined ? force : !isOpen;
+    sidebar.classList.toggle('open', open);
+    overlay.classList.toggle('open', open);
+  }
+
+  // Mostrar botón hamburger en mobile
+  function checkAdminMenu() {
+    const btn = document.getElementById('admin-menu-btn');
+    if (btn) btn.style.display = window.innerWidth <= 900 ? 'flex' : 'none';
+  }
+  checkAdminMenu();
+  window.addEventListener('resize', checkAdminMenu);
 </script>
 </body>
 </html>
