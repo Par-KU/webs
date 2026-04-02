@@ -1610,17 +1610,18 @@
     contacto: { whatsapp: "5255000000", email: "hola@parkü.mx" },
     footer: { desc: "Agencia digital especializada en diseño web y marketing para negocios mexicanos que quieren crecer en internet." },
     servicios: [
-      { icon: "🌐", nombre: "Diseño Web Profesional", desc: "Sitios web modernos, rápidos y diseñados para convertir visitantes en clientes.", features: ["Diseño responsive", "Optimización SEO básica", "Velocidad de carga óptima", "Panel de administración"] },
-      { icon: "🚀", nombre: "Landing Pages", desc: "Páginas de aterrizaje de alta conversión para campañas publicitarias y lanzamientos.", features: ["A/B testing ready", "Integración con CRM", "Formularios inteligentes", "Análisis de conversión"] },
-      { icon: "📈", nombre: "Marketing Digital", desc: "Estrategia digital integral: SEO, redes sociales, publicidad pagada y email marketing.", features: ["SEO on-page y off-page", "Google & Meta Ads", "Content marketing", "Reportes mensuales"] },
-      { icon: "🛒", nombre: "Tiendas en Línea", desc: "E-commerce completo con catálogo, carrito de compras y pasarelas de pago integradas.", features: ["Catálogo ilimitado", "Múltiples métodos de pago", "Gestión de inventario", "Panel de ventas"] },
-      { icon: "✉️", nombre: "Email Marketing", desc: "Campañas de correo automatizadas que nutren a tus leads y aumentan las ventas.", features: ["Automatización de flujos", "Segmentación avanzada", "Templates personalizados", "Métricas detalladas"] },
-      { icon: "📊", nombre: "Consultoría Digital", desc: "Análisis y estrategia para potenciar tu presencia online y superar a tu competencia.", features: ["Auditoría digital completa", "Plan de acción 90 días", "Análisis de competencia", "Sesiones de seguimiento"] }
+      { icon: "🌐", nombre: "Diseño Web Profesional", desc: "Sitios web modernos, rápidos y diseñados para convertir visitantes en clientes.", features: ["Diseño responsive", "Optimización SEO básica", "Velocidad de carga óptima", "Panel de administración"], visible: true },
+      { icon: "🚀", nombre: "Landing Pages", desc: "Páginas de aterrizaje de alta conversión para campañas publicitarias y lanzamientos.", features: ["A/B testing ready", "Integración con CRM", "Formularios inteligentes", "Análisis de conversión"], visible: true },
+      { icon: "📈", nombre: "Marketing Digital", desc: "Gestión de redes sociales, campañas de Google y Meta Ads, y estrategia de contenido para hacer crecer tu negocio en internet.", features: ["Gestión de Facebook e Instagram", "Campañas Google & Meta Ads", "12 publicaciones mensuales", "Reporte mensual de resultados"], visible: false },
+      { icon: "🔍", nombre: "SEO & Posicionamiento", desc: "Posicionamos tu negocio en los primeros resultados de Google para que tus clientes te encuentren antes que a la competencia.", features: ["Investigación de palabras clave", "Optimización de contenido", "2 a 4 artículos de blog/mes", "Reporte mensual de posiciones"], visible: false },
+      { icon: "🛒", nombre: "Tiendas en Línea", desc: "E-commerce completo con catálogo, carrito de compras y pasarelas de pago integradas.", features: ["Catálogo ilimitado", "Múltiples métodos de pago", "Gestión de inventario", "Panel de ventas"], visible: true },
+      { icon: "✉️", nombre: "Email Marketing", desc: "Campañas de correo automatizadas que nutren a tus leads y aumentan las ventas.", features: ["Automatización de flujos", "Segmentación avanzada", "Templates personalizados", "Métricas detalladas"], visible: true }
     ],
     planes: [
-      { tier: "Básico", precio: "6,500", periodo: "Pago único", desc: "Ideal para negocios que están empezando su presencia digital.", features: ["Hasta 5 páginas", "Diseño responsive", "Formulario de contacto", "SEO básico", "Dominio 1er año incluido", "Soporte 30 días"], featured: false },
-      { tier: "Estándar", precio: "14,500", periodo: "Pago único", desc: "Para negocios que necesitan más funcionalidades y un sitio más robusto.", features: ["Hasta 15 páginas", "Blog integrado", "Google Analytics", "Chat de WhatsApp", "SEO avanzado", "Soporte 90 días", "1 revisión de diseño"], featured: true },
-      { tier: "Premium", precio: "28,000", periodo: "Pago único", desc: "Solución completa para empresas que quieren dominar su mercado en línea.", features: ["Páginas ilimitadas", "E-commerce completo", "Estrategia SEO 3 meses", "Panel de administración", "Integraciones avanzadas", "Soporte 6 meses", "3 revisiones de diseño"], featured: false }
+      { tier: "Básico", precio: "6,500", periodo: "Pago único", desc: "Ideal para negocios que están empezando su presencia digital.", features: ["Hasta 5 páginas", "Diseño responsive", "Formulario de contacto", "SEO básico", "Dominio 1er año incluido", "Soporte 30 días"], featured: false, visible: true },
+      { tier: "Estándar", precio: "14,500", periodo: "Pago único", desc: "Para negocios que necesitan más funcionalidades y un sitio más robusto.", features: ["Hasta 15 páginas", "Blog integrado", "Google Analytics", "Chat de WhatsApp", "SEO avanzado", "Soporte 90 días", "1 revisión de diseño"], featured: true, visible: true },
+      { tier: "Premium", precio: "28,000", periodo: "Pago único", desc: "Solución completa para empresas que quieren dominar su mercado en línea.", features: ["Páginas ilimitadas", "E-commerce completo", "Estrategia SEO 3 meses", "Panel de administración", "Integraciones avanzadas", "Soporte 6 meses", "3 revisiones de diseño"], featured: false, visible: true },
+      { tier: "Crecimiento", precio: "2,500", periodo: "Mensual", desc: "Para negocios que ya tienen su web y quieren crecer con marketing digital y SEO activo.", features: ["Gestión de 2 redes sociales", "12 publicaciones mensuales", "1 campaña de anuncios", "SEO mensual incluido", "Reporte de métricas", "Soporte prioritario"], featured: false, visible: false }
     ],
     proceso: [
       { paso: "01", titulo: "Brief & Diagnóstico", desc: "Entendemos tu negocio, objetivos y competencia." },
@@ -1697,7 +1698,8 @@
 
   function renderServicios(d) {
     const svcs = (d.servicios && d.servicios.length) ? d.servicios : DEFAULTS.servicios;
-    document.getElementById('services-grid').innerHTML = svcs.map(s => `
+    const visibles = svcs.filter(s => s.visible !== false);
+    document.getElementById('services-grid').innerHTML = visibles.map(s => `
       <div class="service-card reveal">
         ${s.imgUrl
           ? `<img src="${s.imgUrl}" alt="${s.nombre}" style="width:100%;height:180px;object-fit:cover;border-radius:10px;margin-bottom:20px;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="service-icon" style="display:none">${s.icon||'🌐'}</div>`
@@ -1714,7 +1716,8 @@
 
   function renderPricing(d) {
     const planes = (d.planes && d.planes.length) ? d.planes : DEFAULTS.planes;
-    document.getElementById('pricing-grid').innerHTML = planes.map(p => `
+    const visibles = planes.filter(p => p.visible !== false);
+    document.getElementById('pricing-grid').innerHTML = visibles.map(p => `
       <div class="pricing-card ${p.featured ? 'featured' : ''} reveal">
         <p class="pricing-tier">${p.tier}</p>
         <div class="pricing-price"><sup>$</sup>${p.precio}</div>
