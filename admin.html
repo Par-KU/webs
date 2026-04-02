@@ -437,6 +437,9 @@
     <!-- SERVICIOS -->
     <div class="panel" id="panel-servicios">
       <div class="section-head"><div><h2>Servicios</h2><p>Los servicios que ofreces.</p></div></div>
+      <div style="background:rgba(0,229,255,0.06); border:1px solid rgba(0,229,255,0.15); border-radius:10px; padding:12px 16px; margin-bottom:16px; font-size:13px; color:var(--muted); line-height:1.6;">
+        💡 <strong style="color:var(--cyan)">Para usar imágenes locales:</strong> Sube tus fotos a la carpeta <code style="background:var(--dark4); padding:2px 6px; border-radius:4px; font-size:12px;">assets/img/</code> de tu repo en GitHub, luego escribe la ruta: <code style="background:var(--dark4); padding:2px 6px; border-radius:4px; font-size:12px;">assets/img/veterinaria.jpg</code>
+      </div>
       <div id="servicios-list" class="list-editor"></div>
       <button class="add-btn" onclick="addServicio()">+ Agregar servicio</button>
     </div>
@@ -458,6 +461,9 @@
     <!-- PORTAFOLIO -->
     <div class="panel" id="panel-portfolio">
       <div class="section-head"><div><h2>Portafolio</h2><p>Proyectos destacados.</p></div></div>
+      <div style="background:rgba(0,229,255,0.06); border:1px solid rgba(0,229,255,0.15); border-radius:10px; padding:12px 16px; margin-bottom:16px; font-size:13px; color:var(--muted); line-height:1.6;">
+        💡 <strong style="color:var(--cyan)">Para capturas de proyectos:</strong> Sube screenshots a <code style="background:var(--dark4); padding:2px 6px; border-radius:4px; font-size:12px;">assets/img/</code> en tu repo. Tamaño recomendado: <strong style="color:var(--text)">1200×800px</strong>. Si dejas el campo vacío se muestra el emoji.
+      </div>
       <div id="portfolio-list" class="list-editor"></div>
       <button class="add-btn" onclick="addPortfolio()">+ Agregar proyecto</button>
     </div>
@@ -465,6 +471,9 @@
     <!-- TESTIMONIOS -->
     <div class="panel" id="panel-testimonios">
       <div class="section-head"><div><h2>Testimonios</h2><p>Lo que dicen tus clientes.</p></div></div>
+      <div style="background:rgba(0,229,255,0.06); border:1px solid rgba(0,229,255,0.15); border-radius:10px; padding:12px 16px; margin-bottom:16px; font-size:13px; color:var(--muted); line-height:1.6;">
+        💡 <strong style="color:var(--cyan)">Foto del cliente:</strong> Sube la foto a <code style="background:var(--dark4); padding:2px 6px; border-radius:4px; font-size:12px;">assets/img/</code> o usa una URL directa. Si no hay foto se muestran las iniciales.
+      </div>
       <div id="testimonios-list" class="list-editor"></div>
       <button class="add-btn" onclick="addTestimonio()">+ Agregar testimonio</button>
     </div>
@@ -754,9 +763,14 @@
           <span class="list-item-title" id="svc-title-${i}">${s.icon || '🌐'} ${s.nombre || 'Servicio'}</span>
           <button class="delete-btn" onclick="delSvc(${i})">Eliminar</button>
         </div>
+        ${s.imgUrl ? `<img src="${s.imgUrl}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.style.display='none'" />` : ''}
         <div class="form-row">
-          <div class="form-group"><label>Ícono (emoji)</label><input type="text" value="${s.icon||''}" oninput="window._svcs[${i}].icon=this.value;document.getElementById('svc-title-${i}').textContent=this.value+' '+(window._svcs[${i}].nombre||'')" /></div>
+          <div class="form-group"><label>Ícono (emoji, si no hay imagen)</label><input type="text" value="${s.icon||''}" oninput="window._svcs[${i}].icon=this.value;document.getElementById('svc-title-${i}').textContent=this.value+' '+(window._svcs[${i}].nombre||'')" /></div>
           <div class="form-group"><label>Nombre</label><input type="text" value="${s.nombre||''}" oninput="window._svcs[${i}].nombre=this.value;document.getElementById('svc-title-${i}').textContent=(window._svcs[${i}].icon||'')+' '+this.value" /></div>
+        </div>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label>🖼 Ruta de imagen (ej: assets/img/veterinaria.jpg)</label>
+          <input type="text" value="${s.imgUrl||''}" placeholder="assets/img/nombre.jpg o URL completa" oninput="window._svcs[${i}].imgUrl=this.value" />
         </div>
         <div class="form-group" style="margin-bottom:10px;"><label>Descripción</label><textarea oninput="window._svcs[${i}].desc=this.value">${s.desc||''}</textarea></div>
         <div class="form-group"><label>Características (una por línea)</label><textarea rows="4" oninput="window._svcs[${i}].features=this.value.split('\\n').filter(x=>x)">${(s.features||[]).join('\n')}</textarea></div>
@@ -765,7 +779,7 @@
   }
 
   window.delSvc = i => { window._svcs.splice(i,1); renderSvcsList(); };
-  window.addServicio = () => { window._svcs.push({icon:'🌐',nombre:'Nuevo servicio',desc:'',features:[]}); renderSvcsList(); };
+  window.addServicio = () => { window._svcs.push({icon:'🌐',nombre:'Nuevo servicio',desc:'',imgUrl:'',features:[]}); renderSvcsList(); };
 
   // ── PLANES ──
   function populatePlanes(planes) {
@@ -828,13 +842,14 @@
     document.getElementById('portfolio-list').innerHTML = window._portfolio.map((p,i) => `
       <div class="list-item">
         <div class="list-item-header"><span class="list-item-title" id="port-title-${i}">${p.nombre||'Proyecto'}</span><button class="delete-btn" onclick="delPort(${i})">Eliminar</button></div>
+        ${p.imgUrl ? `<img src="${p.imgUrl}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:12px;" onerror="this.style.display='none'" />` : ''}
         <div class="form-row">
           <div class="form-group"><label>Nombre</label><input type="text" value="${p.nombre||''}" oninput="window._portfolio[${i}].nombre=this.value;document.getElementById('port-title-${i}').textContent=this.value" /></div>
           <div class="form-group"><label>Categoría / Tag</label><input type="text" value="${p.tag||''}" oninput="window._portfolio[${i}].tag=this.value" /></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>Emoji ícono</label><input type="text" value="${p.emoji||'🌐'}" oninput="window._portfolio[${i}].emoji=this.value" /></div>
-          <div class="form-group"><label>URL imagen (opcional)</label><input type="text" value="${p.imgUrl||''}" placeholder="https://..." oninput="window._portfolio[${i}].imgUrl=this.value" /></div>
+          <div class="form-group"><label>Emoji (si no hay imagen)</label><input type="text" value="${p.emoji||'🌐'}" oninput="window._portfolio[${i}].emoji=this.value" /></div>
+          <div class="form-group"><label>🖼 Ruta de imagen</label><input type="text" value="${p.imgUrl||''}" placeholder="assets/img/proyecto.jpg o URL" oninput="window._portfolio[${i}].imgUrl=this.value" /></div>
         </div>
         <div class="form-group"><label>Descripción</label><textarea oninput="window._portfolio[${i}].desc=this.value">${p.desc||''}</textarea></div>
       </div>
@@ -857,14 +872,15 @@
           <div class="form-group"><label>Rol / Empresa</label><input type="text" value="${t.rol||''}" oninput="window._tests[${i}].rol=this.value" /></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>Iniciales (avatar)</label><input type="text" value="${t.initials||''}" oninput="window._tests[${i}].initials=this.value" /></div>
+          <div class="form-group"><label>Iniciales (si no hay foto)</label><input type="text" value="${t.initials||''}" oninput="window._tests[${i}].initials=this.value" /></div>
+          <div class="form-group"><label>🖼 Foto del cliente (opcional)</label><input type="text" value="${t.imgUrl||''}" placeholder="assets/img/cliente.jpg o URL" oninput="window._tests[${i}].imgUrl=this.value" /></div>
         </div>
         <div class="form-group"><label>Testimonio</label><textarea oninput="window._tests[${i}].texto=this.value">${t.texto||''}</textarea></div>
       </div>
     `).join('');
   }
   window.delTest = i => { window._tests.splice(i,1); renderTestsList(); };
-  window.addTestimonio = () => { window._tests.push({nombre:'Nuevo cliente',rol:'',initials:'NC',texto:''}); renderTestsList(); };
+  window.addTestimonio = () => { window._tests.push({nombre:'Nuevo cliente',rol:'',initials:'NC',imgUrl:'',texto:''}); renderTestsList(); };
 
   // ── FAQ ──
   function populateFAQ(faqs) {
