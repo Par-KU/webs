@@ -1684,11 +1684,10 @@
 
   function renderContacto(d) {
     const c = d.contacto || DEFAULTS.contacto;
-    const wa = `https://wa.me/525523202164?text=Hola%20ParKÜ%2C%20me%20interesa%20cotizar%20un%20proyecto`;
-    document.getElementById('whatsapp-link').href = wa;
-    document.getElementById('wa-float').href = wa;
-    document.getElementById('footer-wa').href = wa;
-    document.getElementById('footer-email').textContent = c.email || 'hola@parkü.mx';
+    const waEl = document.getElementById('footer-wa');
+    if (waEl) waEl.href = `https://wa.me/525523202164?text=Hola%20ParKÜ%2C%20me%20interesa%20cotizar%20un%20proyecto`;
+    const emailEl = document.getElementById('footer-email');
+    if (emailEl) emailEl.textContent = c.email || 'hola@parkü.mx';
   }
 
   function renderFooter(d) {
