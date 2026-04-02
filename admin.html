@@ -744,7 +744,6 @@
   // ── SERVICIOS ──
   function populateServicios(svcs) {
     window._svcs = svcs.length ? JSON.parse(JSON.stringify(svcs)) : [];
-    document.getElementById('d-svcs').textContent = window._svcs.length;
     renderSvcsList();
   }
 
@@ -752,12 +751,12 @@
     document.getElementById('servicios-list').innerHTML = window._svcs.map((s,i) => `
       <div class="list-item">
         <div class="list-item-header">
-          <span class="list-item-title">${s.icon || '🌐'} ${s.nombre || 'Servicio'}</span>
+          <span class="list-item-title" id="svc-title-${i}">${s.icon || '🌐'} ${s.nombre || 'Servicio'}</span>
           <button class="delete-btn" onclick="delSvc(${i})">Eliminar</button>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>Ícono (emoji)</label><input type="text" value="${s.icon||''}" oninput="window._svcs[${i}].icon=this.value" /></div>
-          <div class="form-group"><label>Nombre</label><input type="text" value="${s.nombre||''}" oninput="window._svcs[${i}].nombre=this.value;renderSvcsList()" /></div>
+          <div class="form-group"><label>Ícono (emoji)</label><input type="text" value="${s.icon||''}" oninput="window._svcs[${i}].icon=this.value;document.getElementById('svc-title-${i}').textContent=this.value+' '+(window._svcs[${i}].nombre||'')" /></div>
+          <div class="form-group"><label>Nombre</label><input type="text" value="${s.nombre||''}" oninput="window._svcs[${i}].nombre=this.value;document.getElementById('svc-title-${i}').textContent=(window._svcs[${i}].icon||'')+' '+this.value" /></div>
         </div>
         <div class="form-group" style="margin-bottom:10px;"><label>Descripción</label><textarea oninput="window._svcs[${i}].desc=this.value">${s.desc||''}</textarea></div>
         <div class="form-group"><label>Características (una por línea)</label><textarea rows="4" oninput="window._svcs[${i}].features=this.value.split('\\n').filter(x=>x)">${(s.features||[]).join('\n')}</textarea></div>
@@ -777,7 +776,7 @@
     document.getElementById('planes-list').innerHTML = window._planes.map((p,i) => `
       <div class="list-item">
         <div class="list-item-header">
-          <span class="list-item-title">Plan ${p.tier || i+1}</span>
+          <span class="list-item-title" id="plan-title-${i}">Plan ${p.tier || i+1}</span>
           <div style="display:flex;gap:8px;align-items:center;">
             <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);text-transform:none;letter-spacing:0;">
               <input type="checkbox" ${p.featured?'checked':''} onchange="window._planes[${i}].featured=this.checked"> Destacado
@@ -786,7 +785,7 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>Tier / Nombre</label><input type="text" value="${p.tier||''}" oninput="window._planes[${i}].tier=this.value;renderPlanesList()" /></div>
+          <div class="form-group"><label>Tier / Nombre</label><input type="text" value="${p.tier||''}" oninput="window._planes[${i}].tier=this.value;document.getElementById('plan-title-${i}').textContent='Plan '+this.value" /></div>
           <div class="form-group"><label>Precio (MXN, sin $)</label><input type="text" value="${p.precio||''}" oninput="window._planes[${i}].precio=this.value" /></div>
         </div>
         <div class="form-row">
@@ -808,10 +807,10 @@
   function renderProcesoList() {
     document.getElementById('proceso-list').innerHTML = window._proceso.map((p,i) => `
       <div class="list-item">
-        <div class="list-item-header"><span class="list-item-title">Paso ${p.paso} · ${p.titulo||''}</span><button class="delete-btn" onclick="delPaso(${i})">Eliminar</button></div>
+        <div class="list-item-header"><span class="list-item-title" id="paso-title-${i}">Paso ${p.paso} · ${p.titulo||''}</span><button class="delete-btn" onclick="delPaso(${i})">Eliminar</button></div>
         <div class="form-row">
           <div class="form-group"><label>Número</label><input type="text" value="${p.paso||''}" oninput="window._proceso[${i}].paso=this.value" /></div>
-          <div class="form-group"><label>Título</label><input type="text" value="${p.titulo||''}" oninput="window._proceso[${i}].titulo=this.value;renderProcesoList()" /></div>
+          <div class="form-group"><label>Título</label><input type="text" value="${p.titulo||''}" oninput="window._proceso[${i}].titulo=this.value;document.getElementById('paso-title-${i}').textContent='Paso '+(window._proceso[${i}].paso||'')+' · '+this.value" /></div>
         </div>
         <div class="form-group"><label>Descripción</label><textarea oninput="window._proceso[${i}].desc=this.value">${p.desc||''}</textarea></div>
       </div>
@@ -828,20 +827,21 @@
   function renderPortfolioList() {
     document.getElementById('portfolio-list').innerHTML = window._portfolio.map((p,i) => `
       <div class="list-item">
-        <div class="list-item-header"><span class="list-item-title">${p.nombre||'Proyecto'}</span><button class="delete-btn" onclick="delPort(${i})">Eliminar</button></div>
+        <div class="list-item-header"><span class="list-item-title" id="port-title-${i}">${p.nombre||'Proyecto'}</span><button class="delete-btn" onclick="delPort(${i})">Eliminar</button></div>
         <div class="form-row">
-          <div class="form-group"><label>Nombre</label><input type="text" value="${p.nombre||''}" oninput="window._portfolio[${i}].nombre=this.value;renderPortfolioList()" /></div>
+          <div class="form-group"><label>Nombre</label><input type="text" value="${p.nombre||''}" oninput="window._portfolio[${i}].nombre=this.value;document.getElementById('port-title-${i}').textContent=this.value" /></div>
           <div class="form-group"><label>Categoría / Tag</label><input type="text" value="${p.tag||''}" oninput="window._portfolio[${i}].tag=this.value" /></div>
         </div>
         <div class="form-row">
           <div class="form-group"><label>Emoji ícono</label><input type="text" value="${p.emoji||'🌐'}" oninput="window._portfolio[${i}].emoji=this.value" /></div>
+          <div class="form-group"><label>URL imagen (opcional)</label><input type="text" value="${p.imgUrl||''}" placeholder="https://..." oninput="window._portfolio[${i}].imgUrl=this.value" /></div>
         </div>
         <div class="form-group"><label>Descripción</label><textarea oninput="window._portfolio[${i}].desc=this.value">${p.desc||''}</textarea></div>
       </div>
     `).join('');
   }
   window.delPort = i => { window._portfolio.splice(i,1); renderPortfolioList(); };
-  window.addPortfolio = () => { window._portfolio.push({nombre:'Nuevo proyecto',tag:'Web',emoji:'🌐',desc:''}); renderPortfolioList(); };
+  window.addPortfolio = () => { window._portfolio.push({nombre:'Nuevo proyecto',tag:'Web',emoji:'🌐',imgUrl:'',desc:''}); renderPortfolioList(); };
 
   // ── TESTIMONIOS ──
   function populateTestimonios(tests) {
@@ -851,9 +851,9 @@
   function renderTestsList() {
     document.getElementById('testimonios-list').innerHTML = window._tests.map((t,i) => `
       <div class="list-item">
-        <div class="list-item-header"><span class="list-item-title">${t.nombre||'Testimonio'}</span><button class="delete-btn" onclick="delTest(${i})">Eliminar</button></div>
+        <div class="list-item-header"><span class="list-item-title" id="test-title-${i}">${t.nombre||'Testimonio'}</span><button class="delete-btn" onclick="delTest(${i})">Eliminar</button></div>
         <div class="form-row">
-          <div class="form-group"><label>Nombre cliente</label><input type="text" value="${t.nombre||''}" oninput="window._tests[${i}].nombre=this.value;renderTestsList()" /></div>
+          <div class="form-group"><label>Nombre cliente</label><input type="text" value="${t.nombre||''}" oninput="window._tests[${i}].nombre=this.value;document.getElementById('test-title-${i}').textContent=this.value" /></div>
           <div class="form-group"><label>Rol / Empresa</label><input type="text" value="${t.rol||''}" oninput="window._tests[${i}].rol=this.value" /></div>
         </div>
         <div class="form-row">
@@ -874,8 +874,8 @@
   function renderFAQList() {
     document.getElementById('faq-list').innerHTML = window._faq.map((f,i) => `
       <div class="list-item">
-        <div class="list-item-header"><span class="list-item-title">${(f.q||'Pregunta').substring(0,50)}...</span><button class="delete-btn" onclick="delFAQ(${i})">Eliminar</button></div>
-        <div class="form-group" style="margin-bottom:10px;"><label>Pregunta</label><input type="text" value="${(f.q||'').replace(/"/g,'&quot;')}" oninput="window._faq[${i}].q=this.value;renderFAQList()" /></div>
+        <div class="list-item-header"><span class="list-item-title" id="faq-title-${i}">${(f.q||'Pregunta').substring(0,50)}...</span><button class="delete-btn" onclick="delFAQ(${i})">Eliminar</button></div>
+        <div class="form-group" style="margin-bottom:10px;"><label>Pregunta</label><input type="text" value="${(f.q||'').replace(/"/g,'&quot;')}" oninput="window._faq[${i}].q=this.value;document.getElementById('faq-title-${i}').textContent=this.value.substring(0,50)+'...'" /></div>
         <div class="form-group"><label>Respuesta</label><textarea oninput="window._faq[${i}].a=this.value">${f.a||''}</textarea></div>
       </div>
     `).join('');
