@@ -102,18 +102,6 @@
     nav.scrolled { background: rgba(10,10,15,0.92); }
 
     .nav-logo { display: flex; align-items: center; gap: 0; text-decoration: none; }
-    .logo-block {
-      background: var(--violet);
-      padding: 7px 14px;
-      border-radius: 10px;
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 20px;
-      letter-spacing: -0.5px;
-      display: flex; align-items: center; gap: 0;
-    }
-    .logo-par { color: #fff; }
-    .logo-ku  { color: var(--cyan); }
 
     .nav-links { display: flex; align-items: center; gap: 32px; }
     .nav-links a {
@@ -846,8 +834,9 @@
 
 <!-- NAV -->
 <nav id="navbar">
+  <!-- ✅ LOGO REEMPLAZADO CON IMAGEN -->
   <a href="#" class="nav-logo">
-    <span class="logo-block"><span class="logo-par">Par</span><span class="logo-ku">KÜ</span></span>
+    <img src="assets/parkue.webp" alt="ParKÜ" style="height:38px; width:auto; display:block;" />
   </a>
   <div class="nav-links" id="navLinks">
     <a href="#servicios">Servicios</a>
@@ -1439,37 +1428,26 @@
 
     const data = {
       fecha: new Date().toISOString(),
-      // Paso 1
       empresa:   document.getElementById('cq-empresa').value,
       giro:      document.getElementById('cq-giro').value,
       descripcion: document.getElementById('cq-desc').value,
       presenciaDigital: getChipVal('chips-presencia'),
-      // Paso 2
       tipoProyecto: getChipVal('chips-tipo'),
       objetivo:    getChipVal('chips-objetivo'),
       referentes:  document.getElementById('cq-refs').value,
-      // Paso 3
       numPaginas:  getChipVal('chips-paginas'),
       funcionalidades: getChipVal('chips-func'),
       presupuesto: budgets[document.getElementById('cq-budget').value] + ' MXN',
       tiempo:      getChipVal('chips-tiempo'),
       extra:       document.getElementById('cq-extra').value,
-      // Paso 4
       nombre, email, tel,
       contactoPref: getChipVal('chips-contacto'),
     };
 
-    try {
-      const { push, ref } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js");
-      const { getDatabase } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js");
-    } catch {}
-
-    // Guardar en Firebase via módulo ya cargado
     if (window._dbReady) {
       try { await window._pushLead('cotizaciones', data); } catch {}
     }
 
-    // Ocultar form, mostrar éxito
     document.querySelector('.cq-progress').style.display = 'none';
     document.getElementById('cq-success').style.display = 'block';
     document.querySelector('.cq-card').style.display = 'none';
@@ -1480,8 +1458,9 @@
 <footer>
   <div class="footer-grid">
     <div class="footer-about">
+      <!-- ✅ LOGO FOOTER REEMPLAZADO CON IMAGEN -->
       <a href="#" class="nav-logo" style="display:inline-flex;">
-        <span class="logo-block"><span class="logo-par">Par</span><span class="logo-ku">KÜ</span></span>
+        <img src="assets/parkue.webp" alt="ParKÜ" style="height:38px; width:auto; display:block;" />
       </a>
       <p id="footer-desc">Agencia digital especializada en diseño web y marketing para negocios mexicanos que quieren crecer en internet.</p>
     </div>
@@ -1671,7 +1650,6 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  // ── DEFAULTS si Firebase no está configurado aún ──
   const DEFAULTS = {
     hero: {
       tagText: "Agencia Digital · México",
@@ -1891,7 +1869,6 @@
     await push(ref(db, col), data);
   };
 
-  // ── INIT ──
   loadData().then(d => {
     window._dbReady = true;
     renderHero(d);
