@@ -32,9 +32,6 @@
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 8px;
     }
-    .logo-b { background: var(--violet); padding: 5px 12px; border-radius: 8px; font-weight: 800; font-size: 16px; display: inline-flex; align-items: center; gap: 0; }
-    .logo-par-a { color: #fff; }
-    .logo-k { color: var(--cyan); font-weight: 800; font-size: 16px; }
     .sidebar-label { font-size: 10px; color: var(--dim); font-weight: 500; letter-spacing: 0.08em; padding: 20px 20px 6px; text-transform: uppercase; }
     .nav-item {
       display: flex; align-items: center; gap: 10px;
@@ -275,7 +272,6 @@
       .form-row { grid-template-columns: 1fr; }
       .cotz-detail-body { grid-template-columns: 1fr !important; }
 
-      /* Hamburger admin */
       .admin-menu-btn {
         display: flex !important;
         align-items: center; justify-content: center;
@@ -309,6 +305,7 @@
 <!-- Sidebar -->
 <aside class="sidebar">
   <div class="sidebar-logo">
+    <!-- ✅ LOGO SIDEBAR REEMPLAZADO CON IMAGEN -->
     <img src="assets/parkue.webp" alt="ParKÜ" style="height:32px; width:auto; display:block;" />
     <span style="font-size:11px; color:var(--dim); margin-left:4px;">Admin</span>
   </div>
@@ -374,7 +371,6 @@
         <button class="save-btn" onclick="exportCSV()" style="background:var(--dark4); border:1px solid var(--border-v); color:var(--cyan);">⬇ Exportar CSV</button>
       </div>
 
-      <!-- Filtros -->
       <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
         <input type="text" id="cotz-search" placeholder="Buscar por nombre, empresa, giro..." oninput="filterCotz()" style="flex:1; min-width:200px; background:var(--dark3); border:1px solid var(--border); border-radius:8px; padding:9px 14px; color:var(--text); font-size:13px; outline:none;" />
         <select id="cotz-filter-giro" onchange="filterCotz()" style="background:var(--dark3); border:1px solid var(--border); border-radius:8px; padding:9px 14px; color:var(--text); font-size:13px; outline:none;">
@@ -392,7 +388,6 @@
         </select>
       </div>
 
-      <!-- Tabla -->
       <div class="form-section" style="padding:0; overflow:hidden;">
         <table class="leads-table" id="cotz-table">
           <thead>
@@ -413,7 +408,6 @@
         </table>
       </div>
 
-      <!-- Detalle modal -->
       <div id="cotz-detail" style="display:none; margin-top:20px;">
         <div class="form-section">
           <div class="form-section-title" style="justify-content:space-between;">
@@ -556,8 +550,9 @@
 <div id="login-overlay" style="position:fixed;inset:0;background:rgba(10,10,15,0.98);z-index:9998;display:flex;align-items:center;justify-content:center;">
   <div style="background:var(--dark3);border:1px solid var(--border-v);border-radius:20px;padding:48px 40px;width:360px;text-align:center;">
     <div style="margin-bottom:24px;">
-      <span class="logo-b" style="font-size:22px; padding: 8px 16px; border-radius: 10px;"><span class="logo-par-a">Par</span><span class="logo-k" style="font-size:22px;">KÜ</span></span>
-      <p style="font-size:13px;color:var(--muted);margin-top:8px;">Panel de administración</p>
+      <!-- ✅ LOGO LOGIN REEMPLAZADO CON IMAGEN -->
+      <img src="assets/parkue.webp" alt="ParKÜ" style="height:44px; width:auto; display:block; margin:0 auto 8px;" />
+      <p style="font-size:13px;color:var(--muted);">Panel de administración</p>
     </div>
     <div style="margin-bottom:14px;text-align:left;">
       <label style="font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px;">Email</label>
@@ -594,7 +589,6 @@
   const db = getDatabase(app);
   const auth = getAuth(app);
 
-  // Auth
   window.doLogin = async function() {
     const email = document.getElementById('login-email').value;
     const pass = document.getElementById('login-pass').value;
@@ -611,7 +605,6 @@
     if (user) loadAll();
   });
 
-  // ── LOAD ALL ──
   window._data = {};
 
   async function loadAll() {
@@ -764,7 +757,6 @@
     a.click();
   };
 
-  // ── POPULATE ──
   function populateHero(h) {
     document.getElementById('h-tag').value = h.tagText || 'Agencia Digital · México';
     document.getElementById('h-accent').value = h.headlineAccent || 'venda.';
@@ -793,7 +785,6 @@
     document.getElementById('f-desc').value = f.desc || '';
   }
 
-  // ── SERVICIOS ──
   function populateServicios(svcs) {
     window._svcs = svcs.length ? JSON.parse(JSON.stringify(svcs)) : [];
     renderSvcsList();
@@ -833,7 +824,6 @@
   window.delSvc = i => { window._svcs.splice(i,1); renderSvcsList(); };
   window.addServicio = () => { window._svcs.push({icon:'🌐',nombre:'Nuevo servicio',desc:'',imgUrl:'',features:[],visible:true}); renderSvcsList(); };
 
-  // ── PLANES ──
   function populatePlanes(planes) {
     window._planes = planes.length ? JSON.parse(JSON.stringify(planes)) : [];
     renderPlanesList();
@@ -872,7 +862,6 @@
   window.delPlan = i => { window._planes.splice(i,1); renderPlanesList(); };
   window.addPlan = () => { window._planes.push({tier:'Nuevo plan',precio:'0',periodo:'Pago único',desc:'',features:[],featured:false,visible:true}); renderPlanesList(); };
 
-  // ── PROCESO ──
   function populateProceso(pasos) {
     window._proceso = pasos.length ? JSON.parse(JSON.stringify(pasos)) : [];
     renderProcesoList();
@@ -892,7 +881,6 @@
   window.delPaso = i => { window._proceso.splice(i,1); renderProcesoList(); };
   window.addPaso = () => { window._proceso.push({paso:`0${window._proceso.length+1}`,titulo:'Nuevo paso',desc:''}); renderProcesoList(); };
 
-  // ── PORTFOLIO ──
   function populatePortfolio(items) {
     window._portfolio = items.length ? JSON.parse(JSON.stringify(items)) : [];
     renderPortfolioList();
@@ -917,7 +905,6 @@
   window.delPort = i => { window._portfolio.splice(i,1); renderPortfolioList(); };
   window.addPortfolio = () => { window._portfolio.push({nombre:'Nuevo proyecto',tag:'Web',emoji:'🌐',imgUrl:'',desc:''}); renderPortfolioList(); };
 
-  // ── TESTIMONIOS ──
   function populateTestimonios(tests) {
     window._tests = tests.length ? JSON.parse(JSON.stringify(tests)) : [];
     renderTestsList();
@@ -941,7 +928,6 @@
   window.delTest = i => { window._tests.splice(i,1); renderTestsList(); };
   window.addTestimonio = () => { window._tests.push({nombre:'Nuevo cliente',rol:'',initials:'NC',imgUrl:'',texto:''}); renderTestsList(); };
 
-  // ── FAQ ──
   function populateFAQ(faqs) {
     window._faq = faqs.length ? JSON.parse(JSON.stringify(faqs)) : [];
     renderFAQList();
@@ -958,7 +944,6 @@
   window.delFAQ = i => { window._faq.splice(i,1); renderFAQList(); };
   window.addFAQ = () => { window._faq.push({q:'Nueva pregunta',a:''}); renderFAQList(); };
 
-  // ── SAVE ALL ──
   window.saveAll = async function() {
     const btn = document.getElementById('save-btn');
     btn.disabled = true; btn.textContent = 'Guardando...';
@@ -1010,7 +995,6 @@
 </script>
 
 <script>
-  // Panel navigation
   document.querySelectorAll('.nav-item[data-panel]').forEach(item => {
     item.addEventListener('click', () => {
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1018,12 +1002,10 @@
       item.classList.add('active');
       document.getElementById('panel-' + item.dataset.panel).classList.add('active');
       document.getElementById('topbar-title').textContent = item.textContent.trim();
-      // Cierra menú en mobile al seleccionar
       if (window.innerWidth <= 900) toggleAdminMenu(false);
     });
   });
 
-  // Admin responsive menu
   function toggleAdminMenu(force) {
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.getElementById('sidebar-overlay');
@@ -1033,7 +1015,6 @@
     overlay.classList.toggle('open', open);
   }
 
-  // Mostrar botón hamburger en mobile
   function checkAdminMenu() {
     const btn = document.getElementById('admin-menu-btn');
     if (btn) btn.style.display = window.innerWidth <= 900 ? 'flex' : 'none';
